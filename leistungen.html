@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leistungen – Versicherungsmakler Richter GmbH Zwickau</title>
+  <meta name="description" content="Alle Versicherungsleistungen von Silvio Richter: Haftpflicht, Kfz, Kranken, PKV, Lebens- und Rentenversicherung. Unabhängige Beratung in Zwickau.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1C2B4A; --navy-dark: #141f38; --gold: #B8965A; --gold-light: #d4b07a;
+      --warm-white: #F8F6F2; --text: #2C3E50; --text-light: #6B7280; --border: #E5E0D8; --white: #FFFFFF;
+    }
+    html { scroll-behavior: smooth; font-size: 17px; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .section-label { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; }
+
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 0; background: var(--white); box-shadow: 0 1px 20px rgba(28,43,74,0.09); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; flex-direction: column; }
+    .nav-logo-main { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); line-height: 1.1; }
+    .nav-logo-sub { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.87rem; font-weight: 500; color: var(--text); transition: color 0.3s; letter-spacing: 0.02em; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-cta { color: var(--white) !important; background: var(--gold); padding: 10px 22px; border-radius: 2px; font-size: 0.82rem !important; font-weight: 600 !important; transition: background 0.3s, transform 0.2s !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; transform: translateY(-1px); }
+
+    /* PAGE HERO */
+    .page-hero { background: var(--navy); padding: 140px 0 80px; }
+    .page-hero-inner { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+    .page-hero-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+    .page-hero h1 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--white); font-weight: 600; max-width: 520px; }
+    .page-hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.6); max-width: 320px; line-height: 1.75; align-self: flex-end; }
+
+    /* LEISTUNGEN DETAIL */
+    .leistung-detail { padding: 100px 0; }
+    .leistung-detail:nth-child(even) { background: var(--warm-white); }
+    .leistung-detail:nth-child(odd) { background: var(--white); }
+    .leistung-detail-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+    .leistung-detail:nth-child(even) .leistung-detail-inner { direction: rtl; }
+    .leistung-detail:nth-child(even) .leistung-detail-inner > * { direction: ltr; }
+
+    .leistung-sidebar { position: sticky; top: 100px; }
+    .leistung-icon-wrap { width: 72px; height: 72px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; background: var(--white); }
+    .leistung-detail:nth-child(even) .leistung-icon-wrap { background: var(--warm-white); }
+    .leistung-icon-large { width: 36px; height: 36px; color: var(--gold); }
+    .leistung-sidebar h2 { font-size: clamp(1.6rem, 2.2vw, 2.1rem); color: var(--navy); margin-bottom: 20px; }
+    .leistung-sidebar .leistung-tag { display: inline-block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(184,150,90,0.35); padding: 5px 12px; margin-bottom: 20px; }
+    .leistung-sidebar p { font-size: 0.93rem; color: var(--text-light); line-height: 1.8; margin-bottom: 28px; }
+    .leistung-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--navy); color: var(--white); font-size: 0.82rem; font-weight: 600; padding: 12px 24px; border-radius: 2px; letter-spacing: 0.05em; transition: background 0.3s, transform 0.2s; }
+    .leistung-btn:hover { background: var(--gold); transform: translateY(-1px); }
+
+    .leistung-content h3 { font-size: 1.1rem; color: var(--navy); margin: 32px 0 12px; }
+    .leistung-content h3:first-child { margin-top: 0; }
+    .leistung-content p { font-size: 0.93rem; color: var(--text-light); line-height: 1.82; margin-bottom: 16px; }
+    .leistung-vorteile { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
+    .leistung-vorteil { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; background: var(--white); border-left: 3px solid var(--gold); }
+    .leistung-detail:nth-child(even) .leistung-vorteil { background: var(--warm-white); }
+    .leistung-vorteil-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; margin-top: 9px; flex-shrink: 0; }
+    .leistung-vorteil span { font-size: 0.9rem; color: var(--text); font-weight: 500; line-height: 1.6; }
+
+    /* CTA */
+    .cta-strip { background: var(--navy); padding: 80px 0; }
+    .cta-strip-inner { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+    .cta-strip h2 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); color: var(--white); max-width: 500px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--gold); color: var(--white); font-size: 0.88rem; font-weight: 600; padding: 14px 28px; border-radius: 2px; transition: background 0.3s, transform 0.25s, box-shadow 0.3s; letter-spacing: 0.04em; }
+    .btn-primary:hover { background: var(--gold-light); color: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(184,150,90,0.35); }
+
+    /* FOOTER */
+    .footer { background: var(--navy-dark); padding: 46px 0 30px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--white); }
+    .footer-brand-sub { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 5px; letter-spacing: 0.1em; }
+    .footer-links { display: flex; gap: 26px; }
+    .footer-links button { background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.8rem; cursor: pointer; font-family: 'Inter', sans-serif; transition: color 0.2s; padding: 0; }
+    .footer-links button:hover { color: var(--gold); }
+    .footer-copy { padding-top: 22px; font-size: 0.72rem; color: rgba(255,255,255,0.25); text-align: center; }
+
+    /* WHATSAPP */
+    .whatsapp-btn { position: fixed; bottom: 28px; right: 28px; z-index: 200; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.38); transition: transform 0.25s, box-shadow 0.25s; }
+    .whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.52); }
+
+    /* DRAWER */
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(20,31,56,0.55); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.35s; }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .drawer { position: fixed; right: 0; top: 0; bottom: 0; width: min(540px, 95vw); background: var(--white); z-index: 301; overflow-y: auto; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); padding: 56px 44px; }
+    .drawer.open { transform: translateX(0); }
+    .drawer-close { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; background: var(--warm-white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--text); transition: background 0.2s; border-radius: 1px; }
+    .drawer-close:hover { background: var(--border); }
+    .drawer h2 { font-size: 1.55rem; color: var(--navy); margin-bottom: 28px; padding-right: 40px; }
+    .drawer h3 { font-size: 0.92rem; color: var(--navy); margin: 22px 0 8px; font-family: 'Inter', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+    .drawer p, .drawer address { font-size: 0.86rem; color: var(--text-light); line-height: 1.78; font-style: normal; }
+
+    /* COOKIE */
+    .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy-dark); padding: 16px 24px; z-index: 500; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; transform: translateY(100%); transition: transform 0.4s ease; }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-banner p { font-size: 0.8rem; color: rgba(255,255,255,0.68); flex: 1; min-width: 200px; }
+    .cookie-datenschutz { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.8rem; padding: 0; font-family: 'Inter', sans-serif; }
+    .cookie-accept { background: var(--gold); color: var(--white); border: none; padding: 10px 24px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; border-radius: 2px; transition: background 0.2s; }
+    .cookie-accept:hover { background: var(--gold-light); }
+
+    .reveal { opacity: 0; transform: translateY(24px); }
+
+    @media (max-width: 900px) {
+      .leistung-detail-inner { grid-template-columns: 1fr; gap: 40px; }
+      .leistung-detail:nth-child(even) .leistung-detail-inner { direction: ltr; }
+      .leistung-sidebar { position: static; }
+      .nav-links li:not(:last-child) { display: none; }
+      .cta-strip-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 110;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--navy);
+      transition: transform 0.3s, opacity 0.3s;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--white);
+      z-index: 105;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--navy);
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      width: 80%;
+      text-align: center;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:first-child { border-top: 1px solid var(--border); }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu a.mobile-cta {
+      margin-top: 32px;
+      background: var(--gold);
+      color: var(--white);
+      padding: 16px 40px;
+      border: none;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+    .mobile-menu a.mobile-cta:hover { background: var(--gold-light); color: var(--navy); }
+    .mobile-menu-contact {
+      margin-top: 28px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+    .mobile-menu-contact a { font-size: 1.1rem; color: var(--navy); font-weight: 600; border: none; padding: 0; width: auto; display: inline; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-main">Versicherungsmakler Richter</span>
+        <span class="nav-logo-sub">GmbH · Zwickau · seit 1998</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="leistungen.html" class="active">Leistungen</a></li>
+        <li><a href="ueber-mich.html">Über mich</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="kontakt.html" class="nav-cta">Termin vereinbaren</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="leistungen.html">Leistungen</a>
+  <a href="ueber-mich.html">Über mich</a>
+  <a href="kontakt.html">Kontakt</a>
+  <a href="kontakt.html" class="mobile-cta">Termin vereinbaren</a>
+  <div class="mobile-menu-contact"><a href="tel:0376042424">037604 / 2424</a></div>
+</div>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div>
+        <div class="page-hero-eyebrow">Versicherungsberatung</div>
+        <h1>Meine Leistungen für Sie</h1>
+      </div>
+      <p class="page-hero-sub">Alle Bereiche — unabhängig beraten, sorgfältig verglichen, ehrlich empfohlen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 01 HAFTPFLICHT -->
+<section class="leistung-detail" id="haftpflicht">
+  <div class="container">
+    <div class="leistung-detail-inner">
+      <div class="leistung-sidebar reveal">
+        <div class="leistung-icon-wrap">
+          <svg class="leistung-icon-large" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 5L7 13v11c0 9.5 7 17 17 19 10-2 17-9.5 17-19V13L24 5z"/>
+            <circle cx="24" cy="20" r="5"/>
+            <path d="M14 37c1.5-5 5.5-8 10-8s8.5 3 10 8"/>
+          </svg>
+        </div>
+        <span class="leistung-tag">Privatversicherung</span>
+        <h2>Haftpflicht&shy;versicherung</h2>
+        <p>Wer einen Schaden verursacht, haftet — unbegrenzt und mit dem gesamten Privatvermögen. Eine Haftpflichtversicherung schützt Sie genau davor.</p>
+        <a href="kontakt.html" class="leistung-btn">Jetzt beraten lassen</a>
+      </div>
+      <div class="leistung-content reveal">
+        <h3>Warum sie unverzichtbar ist</h3>
+        <p>Ein kurzer Moment der Unachtsamkeit — und schon haben Sie versehentlich jemanden verletzt oder fremdes Eigentum beschädigt. Ohne Versicherung müssen Sie für den entstandenen Schaden mit Ihrem gesamten Vermögen aufkommen. Das kann existenzbedrohend werden.</p>
+        <p>Die private Haftpflichtversicherung zählt zu den wichtigsten Versicherungen überhaupt. Trotzdem ist sie erstaunlich günstig — vor allem im Verhältnis zu dem Schutz, den sie bietet.</p>
+        <h3>Was sie abdeckt</h3>
+        <p>Abgedeckt sind Personen-, Sach- und Vermögensfolgeschäden, die Sie unbeabsichtigt anderen zufügen. Ob auf der Straße, im Haushalt oder beim Sport — der Schutz greift überall dort, wo Sie privat unterwegs sind.</p>
+        <div class="leistung-vorteile">
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Personenschäden, Sachschäden und Vermögensfolgeschäden</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Schutz für alle im Haushalt lebenden Familienmitglieder</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Mitversicherung von Kindern (je nach Tarif)</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Abwehr unberechtigter Schadensersatzforderungen</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Deckungssummen bis 50 Millionen Euro möglich</span></div>
+        </div>
+        <p>Als unabhängiger Makler vergleiche ich für Sie die Konditionen verschiedener Anbieter und finde den Tarif, der optimal zu Ihrer Situation passt — ohne versteckte Lücken.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 KFZ -->
+<section class="leistung-detail" id="kfz">
+  <div class="container">
+    <div class="leistung-detail-inner">
+      <div class="leistung-sidebar reveal">
+        <div class="leistung-icon-wrap">
+          <svg class="leistung-icon-large" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 33h40v4H4z"/>
+            <path d="M4 33l4-8h5l3-7h16l3 7h5l4 8"/>
+            <path d="M15 18h18l2 7H13z"/>
+            <line x1="24" y1="18" x2="24" y2="25"/>
+            <circle cx="13" cy="37" r="4"/>
+            <circle cx="35" cy="37" r="4"/>
+          </svg>
+        </div>
+        <span class="leistung-tag">Fahrzeugversicherung</span>
+        <h2>Kfz-Versicherung</h2>
+        <p>Die richtige Kfz-Versicherung hängt von Ihrem Fahrzeug, Ihrer Fahrleistung und Ihrer persönlichen Risikobereitschaft ab. Ich helfe Ihnen, genau das zu finden.</p>
+        <a href="kontakt.html" class="leistung-btn">Jetzt beraten lassen</a>
+      </div>
+      <div class="leistung-content reveal">
+        <h3>Haftpflicht, Teil- oder Vollkasko?</h3>
+        <p>Die Kfz-Haftpflicht ist gesetzlich vorgeschrieben — sie deckt Schäden ab, die Sie anderen zufügen. Darüber hinaus gibt es die Teilkasko (Schutz bei Diebstahl, Elementarschäden, Glasbruch) und die Vollkasko (zusätzlich: selbst verursachte Schäden am eigenen Fahrzeug).</p>
+        <p>Welcher Schutz sinnvoll ist, hängt vom Fahrzeugwert, dem Alter des Autos und Ihren individuellen Bedürfnissen ab. Als Makler bin ich keinem Anbieter verpflichtet — ich vergleiche für Sie ehrlich.</p>
+        <h3>Worauf ich besonders achte</h3>
+        <p>Viele günstige Tarife haben Schwächen in den Details: eingeschränkte Werkstattwahl, niedrige Deckungssummen oder Ausschlüsse bei bestimmten Schadensfällen. Ich lese das Kleingedruckte für Sie — und erkläre Ihnen, was wirklich drin steht.</p>
+        <div class="leistung-vorteile">
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Gesetzlich vorgeschriebene Kfz-Haftpflicht</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Teilkasko: Diebstahl, Unwetter, Wild, Glasbruch</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Vollkasko: zusätzlich selbstverschuldete Unfallschäden</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Schutzbrief / Pannenhilfe auf Wunsch</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Faire Einstufung bei Schadenfreiheit</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 KRANKEN -->
+<section class="leistung-detail" id="kranken">
+  <div class="container">
+    <div class="leistung-detail-inner">
+      <div class="leistung-sidebar reveal">
+        <div class="leistung-icon-wrap">
+          <svg class="leistung-icon-large" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 8v12a11 11 0 0022 0V8"/>
+            <line x1="13" y1="8" x2="13" y2="12"/>
+            <line x1="35" y1="8" x2="35" y2="12"/>
+            <circle cx="13" cy="7" r="2.5"/>
+            <circle cx="35" cy="7" r="2.5"/>
+            <path d="M24 31c0 6 5 9 5 9"/>
+            <circle cx="29" cy="40" r="3.5"/>
+          </svg>
+        </div>
+        <span class="leistung-tag">Gesundheitsvorsorge</span>
+        <h2>Kranken&shy;versicherung</h2>
+        <p>Gesetzlich oder privat versichert — beide Wege haben Vor- und Nachteile. Ich erkläre Ihnen den Unterschied und helfe Ihnen, die richtige Entscheidung zu treffen.</p>
+        <a href="kontakt.html" class="leistung-btn">Jetzt beraten lassen</a>
+      </div>
+      <div class="leistung-content reveal">
+        <h3>GKV oder PKV — was passt zu Ihnen?</h3>
+        <p>Die gesetzliche Krankenversicherung bietet soliden Basisschutz für alle. Die private Krankenversicherung kann für Beamte, Selbstständige und gut verdienende Angestellte interessant sein — mit mehr Leistungen und freier Arztwahl.</p>
+        <p>Der Wechsel in die PKV ist jedoch eine langfristige Entscheidung. Ich beleuchte für Sie beide Seiten ehrlich — ohne die PKV zu überempfehlen, nur weil sie höhere Provisionen zahlt.</p>
+        <h3>Ergänzungen zur gesetzlichen Versicherung</h3>
+        <p>Wer in der GKV bleibt, kann gezielt nachbessern: Zahnzusatz, Krankenhaustagegeld oder Auslandskrankenschutz sind sinnvolle Ergänzungen, die Lücken in der gesetzlichen Versorgung schließen.</p>
+        <div class="leistung-vorteile">
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Neutrale Gegenüberstellung GKV vs. PKV</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Zahnzusatzversicherung & Krankenhaustagegeld</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Auslandskrankenversicherung für Reisen</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Krankentagegeld für Selbstständige</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Langfristige Betreuung auch nach Vertragsabschluss</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PKV -->
+<section class="leistung-detail" id="pkv">
+  <div class="container">
+    <div class="leistung-detail-inner">
+      <div class="leistung-sidebar reveal">
+        <div class="leistung-icon-wrap">
+          <svg class="leistung-icon-large" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="24" r="17"/>
+            <line x1="24" y1="7" x2="24" y2="10"/>
+            <line x1="24" y1="38" x2="24" y2="41"/>
+            <line x1="7"  y1="24" x2="10" y2="24"/>
+            <line x1="38" y1="24" x2="41" y2="24"/>
+            <path d="M20 14h8v6h6v8h-6v6h-8v-6h-6v-8h6z"/>
+          </svg>
+        </div>
+        <span class="leistung-tag">Privatpatient</span>
+        <h2>Private Kranken&shy;versicherung</h2>
+        <p>Mehr Leistung, kürzere Wartezeiten, freie Arztwahl. Für wen die PKV geeignet ist und was sie kostet — ich erkläre es Ihnen in Ruhe.</p>
+        <a href="kontakt.html" class="leistung-btn">Jetzt beraten lassen</a>
+      </div>
+      <div class="leistung-content reveal">
+        <h3>Was die PKV wirklich bietet</h3>
+        <p>Als Privatpatient werden Sie als Chefarzt-Patient behandelt, bekommen schneller Termine und haben Zugang zu Behandlungsmethoden, die in der GKV nicht standardmäßig abgedeckt sind. Die Beiträge richten sich nach Ihrem Gesundheitszustand und gewähltem Tarif — nicht nach dem Einkommen.</p>
+        <p>Wichtig: PKV-Beiträge steigen im Alter. Ich zeige Ihnen, wie Sie durch Altersrückstellungen und die richtige Tarifwahl langfristig planbar bleiben.</p>
+        <h3>Für wen lohnt sich der Wechsel?</h3>
+        <p>Beamte, Selbstständige und Angestellte, die die Beitragsbemessungsgrenze überschreiten, können in die PKV wechseln. Ob es sich lohnt, hängt von vielen individuellen Faktoren ab — ich rechne das gemeinsam mit Ihnen durch.</p>
+        <div class="leistung-vorteile">
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Freie Arztwahl, Chefarztbehandlung</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Kürzere Wartezeiten bei Fachärzten</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Individuelle Tarifgestaltung nach Ihren Bedürfnissen</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Beihilfe-konforme Tarife für Beamte</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Ehrliche Langzeitberechnung der Beiträge</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 LEBEN -->
+<section class="leistung-detail" id="leben">
+  <div class="container">
+    <div class="leistung-detail-inner">
+      <div class="leistung-sidebar reveal">
+        <div class="leistung-icon-wrap">
+          <svg class="leistung-icon-large" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 25C5 12 43 12 43 25z"/>
+            <path d="M24 25v13c0 3.5 5 3.5 5 0"/>
+            <circle cx="14" cy="32" r="3.2"/>
+            <line x1="14" y1="35.2" x2="14" y2="43"/>
+            <line x1="9"  y1="40"   x2="14" y2="37"/>
+            <line x1="19" y1="40"   x2="14" y2="37"/>
+            <circle cx="34" cy="32" r="3.2"/>
+            <line x1="34" y1="35.2" x2="34" y2="43"/>
+            <line x1="29" y1="40"   x2="34" y2="37"/>
+            <line x1="39" y1="40"   x2="34" y2="37"/>
+          </svg>
+        </div>
+        <span class="leistung-tag">Familienschutz</span>
+        <h2>Lebens&shy;versicherung</h2>
+        <p>Was passiert mit Ihrer Familie, wenn Sie nicht mehr da sind? Die Lebensversicherung gibt Ihnen und Ihren Liebsten die Sicherheit, die sie verdienen.</p>
+        <a href="kontakt.html" class="leistung-btn">Jetzt beraten lassen</a>
+      </div>
+      <div class="leistung-content reveal">
+        <h3>Risikolebensversicherung oder Kapitallebensversicherung?</h3>
+        <p>Die Risikolebensversicherung ist die einfachste und günstigste Form: Sie zahlt im Todesfall eine vereinbarte Summe an Ihre Hinterbliebenen aus. Ideal für Familien mit Kindern und Immobilienfinanzierungen.</p>
+        <p>Die Kapitallebensversicherung verbindet Todesfallschutz mit einem Sparanteil — allerdings sind die Renditen oft überschaubar. Ich berate Sie ehrlich, wann sich welche Form lohnt und wann andere Anlageformen sinnvoller wären.</p>
+        <h3>Absicherung bei Berufsunfähigkeit</h3>
+        <p>Eng verwandt mit der Lebensversicherung ist die Berufsunfähigkeitsversicherung — oft wichtiger, da die Wahrscheinlichkeit, berufsunfähig zu werden, deutlich höher ist als vorzeitig zu sterben. Ich bespreche beides mit Ihnen in einem Gespräch.</p>
+        <div class="leistung-vorteile">
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Finanzielle Absicherung der Familie im Todesfall</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Absicherung laufender Immobilienkredite</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Kombination mit Berufsunfähigkeitsschutz möglich</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Flexible Laufzeiten und Versicherungssummen</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Ehrlicher Vergleich aller relevanten Anbieter</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 RENTE -->
+<section class="leistung-detail" id="rente">
+  <div class="container">
+    <div class="leistung-detail-inner">
+      <div class="leistung-sidebar reveal">
+        <div class="leistung-icon-wrap">
+          <svg class="leistung-icon-large" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6"  y="30" width="10" height="12" fill="rgba(184,150,90,0.12)"/>
+            <rect x="19" y="20" width="10" height="22" fill="rgba(184,150,90,0.12)"/>
+            <rect x="32" y="10" width="10" height="32" fill="rgba(184,150,90,0.12)"/>
+            <line x1="3" y1="42" x2="45" y2="42"/>
+            <path d="M11 30 L24 20 L37 10"/>
+            <path d="M33 8 l4 2 -2 4"/>
+          </svg>
+        </div>
+        <span class="leistung-tag">Altersvorsorge</span>
+        <h2>Renten&shy;versicherung</h2>
+        <p>Die gesetzliche Rente allein reicht in den meisten Fällen nicht aus. Ich helfe Ihnen, die Rentenlücke zu schließen — mit dem richtigen Mix aus staatlichen Förderungen und privater Vorsorge.</p>
+        <a href="kontakt.html" class="leistung-btn">Jetzt beraten lassen</a>
+      </div>
+      <div class="leistung-content reveal">
+        <h3>Die Rentenlücke — und wie man sie schließt</h3>
+        <p>Die meisten Menschen werden im Alter deutlich weniger Rente bekommen, als sie erwarten. Die gesetzliche Rente ersetzt je nach Einkommensbiografie nur 40–50 % des letzten Nettogehalts. Den Rest müssen Sie privat aufbauen.</p>
+        <p>Der beste Zeitpunkt, damit anzufangen, ist so früh wie möglich. Aber auch im mittleren Alter lässt sich noch viel erreichen — vor allem, wenn man staatliche Förderungen wie die Riester- oder Rürup-Rente clever nutzt.</p>
+        <h3>Private Rentenversicherung, Riester oder Rürup?</h3>
+        <p>Jede Form der Altersvorsorge hat ihre Berechtigung — je nach persönlicher Situation, Familienstand und Einkommensverhältnissen. Ich analysiere Ihre Situation und zeige Ihnen den Weg, der für Sie am meisten Sinn ergibt.</p>
+        <div class="leistung-vorteile">
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Private Rentenversicherung (klassisch oder fondsgebunden)</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Riester-Rente: staatliche Förderung + Kinderzulagen</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Rürup-Rente: besonders für Selbstständige attraktiv</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Betriebliche Altersvorsorge (bAV) für Arbeitnehmer</span></div>
+          <div class="leistung-vorteil"><div class="leistung-vorteil-dot"></div><span>Berechnung der individuellen Rentenlücke inklusive</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container">
+    <div class="cta-strip-inner">
+      <h2>Fragen zu einem Bereich? Ich bin für Sie da.</h2>
+      <a href="kontakt.html" class="btn-primary">Kostenloses Erstgespräch</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Versicherungsmakler Richter GmbH</div>
+        <div class="footer-brand-sub">Sportplatzweg 2 &middot; 08058 Zwickau &middot; Gegründet 1998</div>
+      </div>
+      <div class="footer-links">
+        <button onclick="openDrawer('impressum')">Impressum</button>
+        <button onclick="openDrawer('datenschutz')">Datenschutz</button>
+      </div>
+    </div>
+    <div class="footer-copy">&copy; 2025 Versicherungsmakler Richter GmbH &middot; Alle Rechte vorbehalten</div>
+  </div>
+</footer>
+
+<a href="https://wa.me/491725674494" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+  <div id="drawer-impressum" style="display:none">
+    <h2>Impressum</h2>
+    <h3>Angaben gemäß § 5 TMG</h3>
+    <address>Versicherungsmakler Richter GmbH<br>Sportplatzweg 2<br>08058 Zwickau<br><br>Telefon: 037604 / 2424<br>E-Mail: ga-richter@freenet.de</address>
+    <h3>Handelsregister</h3>
+    <p>Amtsgericht Chemnitz &middot; HRB 16266<br>Geschäftsführer: Silvio Richter</p>
+    <h3>Berufsbezeichnung</h3>
+    <p>Versicherungsmakler gemäß § 34d GewO. Erlaubnis erteilt durch die IHK Chemnitz.</p>
+  </div>
+  <div id="drawer-datenschutz" style="display:none">
+    <h2>Datenschutzerklärung</h2>
+    <h3>1. Verantwortlicher</h3>
+    <p>Versicherungsmakler Richter GmbH, Sportplatzweg 2, 08058 Zwickau</p>
+    <h3>2. Datenerhebung</h3>
+    <p>Wir erheben personenbezogene Daten ausschließlich bei aktiver Kontaktaufnahme. Diese werden nur zur Bearbeitung Ihrer Anfrage verwendet.</p>
+    <h3>3. Ihre Rechte</h3>
+    <p>Auskunft, Berichtigung, Löschung: ga-richter@freenet.de</p>
+  </div>
+</div>
+
+<div class="cookie-banner" id="cookieBanner">
+  <p>Diese Website verwendet technisch notwendige Cookies. <button class="cookie-datenschutz" onclick="openDrawer('datenschutz')">Mehr erfahren</button></p>
+  <button class="cookie-accept" onclick="acceptCookie()">Verstanden</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (!localStorage.getItem('cookie_v1')) setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 900);
+  window.acceptCookie = function () { localStorage.setItem('cookie_v1','1'); document.getElementById('cookieBanner').classList.remove('show'); };
+  window.openDrawer = function (type) {
+    ['impressum','datenschutz'].forEach(id => document.getElementById('drawer-'+id).style.display='none');
+    document.getElementById('drawer-'+type).style.display='block';
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
+  };
+  window.closeDrawer = function () {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  };
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeDrawer(); });
+  window.addEventListener('load', () => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.utils.toArray('.reveal').forEach((el,i) => {
+        gsap.fromTo(el, {opacity:0,y:22}, {opacity:1,y:0,duration:0.9,ease:'power2.out',delay:(i%2)*0.1,
+          scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}});
+      });
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
+    }
+  });
+});
+
+  // HAMBURGER
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+</script>
+</body>
+</html>

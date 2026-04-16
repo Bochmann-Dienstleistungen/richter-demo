@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontakt – Versicherungsmakler Richter GmbH Zwickau</title>
+  <meta name="description" content="Termin vereinbaren mit Silvio Richter — unabhängiger Versicherungsmakler in Zwickau. Kostenlose Erstberatung, keine Verpflichtung.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1C2B4A; --navy-dark: #141f38; --gold: #B8965A; --gold-light: #d4b07a;
+      --warm-white: #F8F6F2; --text: #2C3E50; --text-light: #6B7280; --border: #E5E0D8; --white: #FFFFFF;
+    }
+    html { scroll-behavior: smooth; font-size: 17px; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; }
+
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 0; background: var(--white); box-shadow: 0 1px 20px rgba(28,43,74,0.09); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; flex-direction: column; }
+    .nav-logo-main { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); line-height: 1.1; }
+    .nav-logo-sub { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.87rem; font-weight: 500; color: var(--text); transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-cta { color: var(--white) !important; background: var(--gold); padding: 10px 22px; border-radius: 2px; font-size: 0.82rem !important; font-weight: 600 !important; transition: background 0.3s, transform 0.2s !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; transform: translateY(-1px); }
+
+    /* PAGE HERO */
+    .page-hero { background: var(--navy); padding: 140px 0 80px; }
+    .page-hero-inner { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+    .page-hero-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+    .page-hero h1 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--white); font-weight: 600; max-width: 520px; }
+    .page-hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.6); max-width: 300px; line-height: 1.75; align-self: flex-end; }
+
+    /* CONTACT SECTION */
+    .kontakt-main { padding: 100px 0; }
+    .kontakt-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 88px; align-items: start; }
+
+    /* Info side */
+    .kontakt-info h2 { font-size: clamp(1.6rem, 2.3vw, 2.1rem); color: var(--navy); margin-bottom: 32px; }
+    .kontakt-detail { display: flex; gap: 16px; margin-bottom: 22px; align-items: flex-start; }
+    .kontakt-detail-icon { width: 44px; height: 44px; background: var(--warm-white); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); }
+    .kontakt-detail-text strong { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-light); margin-bottom: 4px; }
+    .kontakt-detail-text span, .kontakt-detail-text a { font-size: 0.96rem; color: var(--text); font-weight: 500; transition: color 0.2s; }
+    .kontakt-detail-text a:hover { color: var(--gold); }
+
+    .kontakt-zeiten { margin-top: 38px; padding: 22px 24px; background: var(--warm-white); border-left: 3px solid var(--gold); }
+    .kontakt-zeiten h4 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); margin-bottom: 14px; font-family: 'Inter', sans-serif; font-weight: 600; }
+    .zeiten-row { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text); padding: 7px 0; border-bottom: 1px solid var(--border); }
+    .zeiten-row:last-child { border-bottom: none; }
+    .zeiten-row span:last-child { font-weight: 600; color: var(--navy); }
+
+    .kontakt-note { margin-top: 32px; padding: 20px 22px; background: var(--navy); }
+    .kontakt-note p { font-size: 0.86rem; color: rgba(255,255,255,0.7); line-height: 1.7; }
+    .kontakt-note strong { color: var(--gold-light); }
+
+    /* Form */
+    .kontakt-form-wrap { }
+    .form-title { font-size: 1.3rem; color: var(--navy); margin-bottom: 28px; font-family: 'Playfair Display', serif; }
+    .kontakt-form { display: flex; flex-direction: column; gap: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-light); }
+    .form-group input, .form-group textarea, .form-group select { border: 1px solid var(--border); background: var(--warm-white); padding: 13px 16px; font-size: 0.94rem; font-family: 'Inter', sans-serif; color: var(--text); border-radius: 1px; outline: none; transition: border-color 0.25s, background 0.25s; width: 100%; appearance: none; -webkit-appearance: none; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); background: var(--white); }
+    .form-group textarea { resize: vertical; min-height: 140px; }
+    .form-footer { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .btn-form { background: var(--navy); color: var(--white); border: none; padding: 14px 32px; font-size: 0.86rem; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; letter-spacing: 0.07em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; border-radius: 2px; }
+    .btn-form:hover { background: var(--gold); transform: translateY(-1px); }
+    .form-privacy { font-size: 0.75rem; color: var(--text-light); }
+    .form-privacy button { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.75rem; font-family: 'Inter', sans-serif; padding: 0; }
+
+    /* Success message */
+    .form-success { display: none; padding: 20px 24px; background: rgba(184,150,90,0.1); border-left: 3px solid var(--gold); }
+    .form-success p { font-size: 0.9rem; color: var(--text); }
+
+    /* MAP */
+    .map-section { height: 420px; }
+    .map-section iframe { width: 100%; height: 100%; border: none; display: block; filter: grayscale(25%) contrast(1.04); }
+
+    /* DIRECT CONTACT STRIP */
+    .direct-strip { background: var(--warm-white); padding: 60px 0; border-top: 1px solid var(--border); }
+    .direct-strip-inner { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); border: 1px solid var(--border); }
+    .direct-card { background: var(--white); padding: 36px 32px; display: flex; gap: 20px; align-items: flex-start; transition: background 0.3s; }
+    .direct-card:hover { background: var(--warm-white); }
+    .direct-card-icon { width: 48px; height: 48px; background: var(--navy); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); }
+    .direct-card h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-light); margin-bottom: 6px; font-family: 'Inter', sans-serif; font-weight: 600; }
+    .direct-card a, .direct-card p { font-size: 1.02rem; color: var(--navy); font-weight: 600; line-height: 1.4; transition: color 0.2s; }
+    .direct-card a:hover { color: var(--gold); }
+    .direct-card-sub { font-size: 0.78rem; color: var(--text-light); margin-top: 4px; font-weight: 400 !important; }
+
+    /* FOOTER */
+    .footer { background: var(--navy-dark); padding: 46px 0 30px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--white); }
+    .footer-brand-sub { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 5px; letter-spacing: 0.1em; }
+    .footer-links { display: flex; gap: 26px; }
+    .footer-links button { background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.8rem; cursor: pointer; font-family: 'Inter', sans-serif; transition: color 0.2s; padding: 0; }
+    .footer-links button:hover { color: var(--gold); }
+    .footer-copy { padding-top: 22px; font-size: 0.72rem; color: rgba(255,255,255,0.25); text-align: center; }
+
+    .whatsapp-btn { position: fixed; bottom: 28px; right: 28px; z-index: 200; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.38); transition: transform 0.25s, box-shadow 0.25s; }
+    .whatsapp-btn:hover { transform: scale(1.1); }
+
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(20,31,56,0.55); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.35s; }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .drawer { position: fixed; right: 0; top: 0; bottom: 0; width: min(540px, 95vw); background: var(--white); z-index: 301; overflow-y: auto; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); padding: 56px 44px; }
+    .drawer.open { transform: translateX(0); }
+    .drawer-close { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; background: var(--warm-white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--text); transition: background 0.2s; border-radius: 1px; }
+    .drawer-close:hover { background: var(--border); }
+    .drawer h2 { font-size: 1.55rem; color: var(--navy); margin-bottom: 28px; padding-right: 40px; }
+    .drawer h3 { font-size: 0.92rem; color: var(--navy); margin: 22px 0 8px; font-family: 'Inter', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+    .drawer p, .drawer address { font-size: 0.86rem; color: var(--text-light); line-height: 1.78; font-style: normal; }
+
+    .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy-dark); padding: 16px 24px; z-index: 500; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; transform: translateY(100%); transition: transform 0.4s ease; }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-banner p { font-size: 0.8rem; color: rgba(255,255,255,0.68); flex: 1; }
+    .cookie-datenschutz { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.8rem; padding: 0; font-family: 'Inter', sans-serif; }
+    .cookie-accept { background: var(--gold); color: var(--white); border: none; padding: 10px 24px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; border-radius: 2px; transition: background 0.2s; }
+
+    .reveal { opacity: 0; transform: translateY(24px); }
+    .reveal-left { opacity: 0; transform: translateX(-36px); }
+    .reveal-right { opacity: 0; transform: translateX(36px); }
+
+    @media (max-width: 900px) {
+      .kontakt-grid { grid-template-columns: 1fr; gap: 56px; }
+      .form-row { grid-template-columns: 1fr; }
+      .direct-strip-inner { grid-template-columns: 1fr; }
+      .nav-links li:not(:last-child) { display: none; }
+      .page-hero-sub { display: none; }
+    }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 110;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--navy);
+      transition: transform 0.3s, opacity 0.3s;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--white);
+      z-index: 105;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--navy);
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      width: 80%;
+      text-align: center;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:first-child { border-top: 1px solid var(--border); }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu a.mobile-cta {
+      margin-top: 32px;
+      background: var(--gold);
+      color: var(--white);
+      padding: 16px 40px;
+      border: none;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+    .mobile-menu a.mobile-cta:hover { background: var(--gold-light); color: var(--navy); }
+    .mobile-menu-contact {
+      margin-top: 28px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+    .mobile-menu-contact a { font-size: 1.1rem; color: var(--navy); font-weight: 600; border: none; padding: 0; width: auto; display: inline; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-main">Versicherungsmakler Richter</span>
+        <span class="nav-logo-sub">GmbH · Zwickau · seit 1998</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="leistungen.html">Leistungen</a></li>
+        <li><a href="ueber-mich.html">Über mich</a></li>
+        <li><a href="kontakt.html" class="active">Kontakt</a></li>
+        <li><a href="kontakt.html" class="nav-cta">Termin vereinbaren</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="leistungen.html">Leistungen</a>
+  <a href="ueber-mich.html">Über mich</a>
+  <a href="kontakt.html">Kontakt</a>
+  <a href="kontakt.html" class="mobile-cta">Termin vereinbaren</a>
+  <div class="mobile-menu-contact"><a href="tel:0376042424">037604 / 2424</a></div>
+</div>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div>
+        <div class="page-hero-eyebrow">Kostenlose Erstberatung</div>
+        <h1>Sprechen wir miteinander.</h1>
+      </div>
+      <p class="page-hero-sub">Kein Druck, keine Verpflichtung. Nur ein ehrliches Gespräch über Ihre Situation.</p>
+    </div>
+  </div>
+</div>
+
+<!-- DIRECT STRIP -->
+<div class="direct-strip">
+  <div class="container">
+    <div class="direct-strip-inner">
+      <div class="direct-card reveal">
+        <div class="direct-card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 4.18 2 2 0 015.07 2h3a2 2 0 012 1.72 12.8 12.8 0 00.7 2.81 2 2 0 01-.45 2.11L9.21 9.84a16 16 0 006.95 6.95l1.1-1.11a2 2 0 012.11-.45c.93.31 1.9.58 2.9.71A2 2 0 0122 16.92z"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Telefon</h3>
+          <a href="tel:0376042424">037604 / 2424</a>
+          <p class="direct-card-sub">Di &amp; Fr 14–18 Uhr · Sonst n. Vereinb.</p>
+        </div>
+      </div>
+      <div class="direct-card reveal">
+        <div class="direct-card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div>
+          <h3>E-Mail</h3>
+          <a href="mailto:ga-richter@freenet.de">ga-richter@freenet.de</a>
+          <p class="direct-card-sub">Antwort in der Regel innerhalb 24 h</p>
+        </div>
+      </div>
+      <div class="direct-card reveal">
+        <div class="direct-card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Adresse</h3>
+          <p>Sportplatzweg 2<br>08058 Zwickau</p>
+          <p class="direct-card-sub">Stadtteil Mosel</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTACT -->
+<section class="kontakt-main">
+  <div class="container">
+    <div class="kontakt-grid">
+
+      <div class="kontakt-info reveal-left">
+        <span class="section-label">So erreichen Sie mich</span>
+        <h2>Ich freue mich auf Ihre Nachricht</h2>
+
+        <div class="kontakt-detail">
+          <div class="kontakt-detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div class="kontakt-detail-text">
+            <strong>Büro-Adresse</strong>
+            <span>Sportplatzweg 2, 08058 Zwickau</span>
+          </div>
+        </div>
+
+        <div class="kontakt-detail">
+          <div class="kontakt-detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 4.18 2 2 0 015.07 2h3a2 2 0 012 1.72 12.8 12.8 0 00.7 2.81 2 2 0 01-.45 2.11L9.21 9.84a16 16 0 006.95 6.95l1.1-1.11a2 2 0 012.11-.45c.93.31 1.9.58 2.9.71A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <div class="kontakt-detail-text">
+            <strong>Telefon</strong>
+            <a href="tel:0376042424"><span>037604 / 2424</span></a>
+          </div>
+        </div>
+
+        <div class="kontakt-detail">
+          <div class="kontakt-detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div class="kontakt-detail-text">
+            <strong>E-Mail</strong>
+            <a href="mailto:ga-richter@freenet.de"><span>ga-richter@freenet.de</span></a>
+          </div>
+        </div>
+
+        <div class="kontakt-zeiten">
+          <h4>Sprechzeiten</h4>
+          <div class="zeiten-row"><span>Dienstag</span><span>14:00 – 18:00 Uhr</span></div>
+          <div class="zeiten-row"><span>Freitag</span><span>14:00 – 18:00 Uhr</span></div>
+          <div class="zeiten-row"><span>Mo, Mi, Do &amp; Sa</span><span>Nach Vereinbarung</span></div>
+        </div>
+
+        <div class="kontakt-note">
+          <p><strong>Kostenlose Erstberatung:</strong> Unser erstes Gespräch ist unverbindlich. Ich schaue mir Ihre Situation an und sage Ihnen ehrlich, ob und wo Handlungsbedarf besteht — ohne Abschlussdruck.</p>
+        </div>
+      </div>
+
+      <div class="reveal-right">
+        <div class="form-title">Anfrage senden</div>
+        <form class="kontakt-form" id="kontaktForm" action="https://formspree.io/f/mlgpooqw" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Ihr Name *</label>
+              <input type="text" id="name" name="name" placeholder="Max Mustermann" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Telefon</label>
+              <input type="tel" id="phone" name="phone" placeholder="037604 / ...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">E-Mail-Adresse *</label>
+            <input type="email" id="email" name="email" placeholder="ihre@email.de" required>
+          </div>
+          <div class="form-group">
+            <label for="thema">Thema</label>
+            <select id="thema" name="thema">
+              <option value="">Bitte wählen ...</option>
+              <option>Haftpflichtversicherung</option>
+              <option>Kfz-Versicherung</option>
+              <option>Krankenversicherung</option>
+              <option>Private Krankenversicherung (PKV)</option>
+              <option>Lebensversicherung</option>
+              <option>Rentenversicherung / Altersvorsorge</option>
+              <option>Bestandsvertrag prüfen lassen</option>
+              <option>Allgemeine Anfrage</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="wunschtermin">Wunschtermin (optional)</label>
+            <input type="text" id="wunschtermin" name="wunschtermin" placeholder="z.B. Dienstag, 15 Uhr">
+          </div>
+          <div class="form-group">
+            <label for="nachricht">Ihre Nachricht</label>
+            <textarea id="nachricht" name="nachricht" placeholder="Beschreiben Sie kurz Ihr Anliegen ..."></textarea>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="btn-form">Anfrage absenden</button>
+            <p class="form-privacy">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten zu. <button type="button" onclick="openDrawer('datenschutz')">Datenschutz</button></p>
+          </div>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <p>Vielen Dank für Ihre Nachricht. Ich melde mich so schnell wie möglich bei Ihnen — in der Regel innerhalb von 24 Stunden.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<div class="map-section">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2514.8993893376985!2d12.44817!3d50.71456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a748b10c3b5555%3A0x8c5e34e8c85e7e07!2sSportplatzweg%202%2C%2008058%20Zwickau!5e0!3m2!1sde!2sde!4v1713200000000!5m2!1sde!2sde"
+    allowfullscreen="" loading="lazy"
+    title="Versicherungsmakler Richter GmbH — Sportplatzweg 2, Zwickau">
+  </iframe>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Versicherungsmakler Richter GmbH</div>
+        <div class="footer-brand-sub">Sportplatzweg 2 &middot; 08058 Zwickau &middot; Gegründet 1998</div>
+      </div>
+      <div class="footer-links">
+        <button onclick="openDrawer('impressum')">Impressum</button>
+        <button onclick="openDrawer('datenschutz')">Datenschutz</button>
+      </div>
+    </div>
+    <div class="footer-copy">&copy; 2025 Versicherungsmakler Richter GmbH &middot; Alle Rechte vorbehalten</div>
+  </div>
+</footer>
+
+<a href="https://wa.me/491725674494" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+  <div id="drawer-impressum" style="display:none">
+    <h2>Impressum</h2>
+    <h3>Angaben gemäß § 5 TMG</h3>
+    <address>Versicherungsmakler Richter GmbH<br>Sportplatzweg 2<br>08058 Zwickau<br><br>Telefon: 037604 / 2424<br>E-Mail: ga-richter@freenet.de</address>
+    <h3>Handelsregister</h3>
+    <p>Amtsgericht Chemnitz &middot; HRB 16266 &middot; Geschäftsführer: Silvio Richter</p>
+    <h3>Berufsbezeichnung</h3>
+    <p>Versicherungsmakler gemäß § 34d GewO. Erlaubnis erteilt durch die IHK Chemnitz.</p>
+  </div>
+  <div id="drawer-datenschutz" style="display:none">
+    <h2>Datenschutzerklärung</h2>
+    <h3>1. Verantwortlicher</h3>
+    <p>Versicherungsmakler Richter GmbH, Sportplatzweg 2, 08058 Zwickau</p>
+    <h3>2. Datenerhebung</h3>
+    <p>Wir erheben personenbezogene Daten ausschließlich bei aktiver Kontaktaufnahme und verwenden diese nur zur Bearbeitung Ihrer Anfrage.</p>
+    <h3>3. Ihre Rechte</h3>
+    <p>Auskunft, Berichtigung, Löschung: ga-richter@freenet.de</p>
+  </div>
+</div>
+
+<div class="cookie-banner" id="cookieBanner">
+  <p>Diese Website verwendet technisch notwendige Cookies. <button class="cookie-datenschutz" onclick="openDrawer('datenschutz')">Mehr erfahren</button></p>
+  <button class="cookie-accept" onclick="acceptCookie()">Verstanden</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (!localStorage.getItem('cookie_v1')) setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 900);
+  window.acceptCookie = function () { localStorage.setItem('cookie_v1','1'); document.getElementById('cookieBanner').classList.remove('show'); };
+  window.openDrawer = function (type) {
+    ['impressum','datenschutz'].forEach(id => document.getElementById('drawer-'+id).style.display='none');
+    document.getElementById('drawer-'+type).style.display='block';
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
+  };
+  window.closeDrawer = function () {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  };
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeDrawer(); });
+
+  // Form success (Formspree redirect alternative)
+  const form = document.getElementById('kontaktForm');
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+        }
+      } catch(err) { form.submit(); }
+    });
+  }
+
+  window.addEventListener('load', () => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      const cfg = { toggleActions: 'play none none none' };
+      gsap.utils.toArray('.reveal').forEach((el,i) =>
+        gsap.fromTo(el,{opacity:0,y:22},{opacity:1,y:0,duration:0.9,ease:'power2.out',delay:(i%3)*0.08,scrollTrigger:{trigger:el,start:'top 88%',...cfg}}));
+      gsap.utils.toArray('.reveal-left').forEach(el =>
+        gsap.fromTo(el,{opacity:0,x:-36},{opacity:1,x:0,duration:1.05,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 83%',...cfg}}));
+      gsap.utils.toArray('.reveal-right').forEach(el =>
+        gsap.fromTo(el,{opacity:0,x:36},{opacity:1,x:0,duration:1.05,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 83%',...cfg}}));
+    } else {
+      document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
+    }
+  });
+});
+
+  // HAMBURGER
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+</script>
+</body>
+</html>

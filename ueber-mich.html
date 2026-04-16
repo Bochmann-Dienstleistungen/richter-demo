@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Über mich – Silvio Richter | Versicherungsmakler Zwickau</title>
+  <meta name="description" content="Silvio Richter — seit 1998 unabhängiger Versicherungsmakler in Zwickau. Persönlich, ehrlich, ohne Druck.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1C2B4A; --navy-dark: #141f38; --gold: #B8965A; --gold-light: #d4b07a;
+      --warm-white: #F8F6F2; --text: #2C3E50; --text-light: #6B7280; --border: #E5E0D8; --white: #FFFFFF;
+    }
+    html { scroll-behavior: smooth; font-size: 17px; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; }
+
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 0; background: var(--white); box-shadow: 0 1px 20px rgba(28,43,74,0.09); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; flex-direction: column; }
+    .nav-logo-main { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); line-height: 1.1; }
+    .nav-logo-sub { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.87rem; font-weight: 500; color: var(--text); transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-cta { color: var(--white) !important; background: var(--gold); padding: 10px 22px; border-radius: 2px; font-size: 0.82rem !important; font-weight: 600 !important; transition: background 0.3s, transform 0.2s !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; transform: translateY(-1px); }
+
+    /* PAGE HERO */
+    .page-hero { background: var(--navy); padding: 140px 0 80px; }
+    .page-hero-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .page-hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+    .page-hero h1 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--white); font-weight: 600; }
+
+    /* INTRO */
+    .intro { padding: 100px 0; }
+    .intro-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 88px; align-items: center; }
+    .intro-img-wrap { position: relative; }
+    .intro-img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: center top; display: block; }
+    .intro-img-frame { position: absolute; bottom: -22px; right: -22px; width: 68%; height: 68%; border: 2px solid var(--gold); z-index: -1; pointer-events: none; }
+    .intro-badge { position: absolute; bottom: 32px; left: -28px; background: var(--navy); color: var(--white); padding: 20px 24px; text-align: center; box-shadow: 0 8px 36px rgba(28,43,74,0.28); }
+    .intro-badge-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); font-weight: 600; line-height: 1; }
+    .intro-badge-text { font-size: 0.68rem; color: rgba(255,255,255,0.62); margin-top: 5px; }
+    .intro-content h2 { font-size: clamp(1.75rem, 2.6vw, 2.3rem); color: var(--navy); margin-bottom: 26px; }
+    .intro-content p { color: var(--text-light); margin-bottom: 18px; line-height: 1.82; font-size: 0.96rem; }
+    .intro-content p strong { color: var(--text); font-weight: 600; }
+
+    /* WERTE */
+    .werte { padding: 100px 0; background: var(--warm-white); }
+    .werte-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px; background: var(--border); border: 1px solid var(--border); }
+    .wert-card { background: var(--white); padding: 44px 36px; position: relative; overflow: hidden; }
+    .wert-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .wert-card:hover::before { transform: scaleX(1); }
+    .wert-num { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--border); font-weight: 700; line-height: 1; margin-bottom: 20px; transition: color 0.3s; }
+    .wert-card:hover .wert-num { color: rgba(184,150,90,0.15); }
+    .wert-card h3 { font-size: 1.12rem; color: var(--navy); margin-bottom: 12px; }
+    .wert-card p { font-size: 0.88rem; color: var(--text-light); line-height: 1.75; }
+
+    /* TIMELINE */
+    .timeline-section { padding: 100px 0; }
+    .timeline { position: relative; margin-top: 56px; padding-left: 40px; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--border); }
+    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot { position: absolute; left: -46px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); border: 2px solid var(--white); box-shadow: 0 0 0 2px var(--gold); }
+    .timeline-year { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .timeline-item h3 { font-size: 1.05rem; color: var(--navy); margin-bottom: 8px; font-family: 'Playfair Display', serif; }
+    .timeline-item p { font-size: 0.9rem; color: var(--text-light); line-height: 1.75; max-width: 560px; }
+
+    /* CTA */
+    .cta-personal { padding: 100px 0; background: var(--navy); }
+    .cta-personal-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .cta-personal h2 { font-size: clamp(1.8rem, 2.8vw, 2.4rem); color: var(--white); margin-bottom: 20px; }
+    .cta-personal p { color: rgba(255,255,255,0.65); font-size: 0.97rem; line-height: 1.8; margin-bottom: 36px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--gold); color: var(--white); font-size: 0.88rem; font-weight: 600; padding: 14px 28px; border-radius: 2px; transition: background 0.3s, transform 0.25s, box-shadow 0.3s; letter-spacing: 0.04em; }
+    .btn-primary:hover { background: var(--gold-light); color: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(184,150,90,0.35); }
+    .cta-contact-info { display: flex; flex-direction: column; gap: 22px; }
+    .cta-contact-row { display: flex; align-items: center; gap: 16px; }
+    .cta-contact-icon { width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
+    .cta-contact-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 3px; }
+    .cta-contact-value { font-size: 0.97rem; color: var(--white); font-weight: 500; }
+    .cta-contact-value a { color: var(--white); transition: color 0.2s; }
+    .cta-contact-value a:hover { color: var(--gold-light); }
+
+    /* FOOTER */
+    .footer { background: var(--navy-dark); padding: 46px 0 30px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--white); }
+    .footer-brand-sub { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 5px; letter-spacing: 0.1em; }
+    .footer-links { display: flex; gap: 26px; }
+    .footer-links button { background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.8rem; cursor: pointer; font-family: 'Inter', sans-serif; transition: color 0.2s; padding: 0; }
+    .footer-links button:hover { color: var(--gold); }
+    .footer-copy { padding-top: 22px; font-size: 0.72rem; color: rgba(255,255,255,0.25); text-align: center; }
+
+    .whatsapp-btn { position: fixed; bottom: 28px; right: 28px; z-index: 200; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.38); transition: transform 0.25s, box-shadow 0.25s; }
+    .whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.52); }
+
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(20,31,56,0.55); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.35s; }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .drawer { position: fixed; right: 0; top: 0; bottom: 0; width: min(540px, 95vw); background: var(--white); z-index: 301; overflow-y: auto; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); padding: 56px 44px; }
+    .drawer.open { transform: translateX(0); }
+    .drawer-close { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; background: var(--warm-white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--text); transition: background 0.2s; border-radius: 1px; }
+    .drawer-close:hover { background: var(--border); }
+    .drawer h2 { font-size: 1.55rem; color: var(--navy); margin-bottom: 28px; padding-right: 40px; }
+    .drawer h3 { font-size: 0.92rem; color: var(--navy); margin: 22px 0 8px; font-family: 'Inter', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+    .drawer p, .drawer address { font-size: 0.86rem; color: var(--text-light); line-height: 1.78; font-style: normal; }
+
+    .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy-dark); padding: 16px 24px; z-index: 500; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; transform: translateY(100%); transition: transform 0.4s ease; }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-banner p { font-size: 0.8rem; color: rgba(255,255,255,0.68); flex: 1; }
+    .cookie-datenschutz { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.8rem; padding: 0; font-family: 'Inter', sans-serif; }
+    .cookie-accept { background: var(--gold); color: var(--white); border: none; padding: 10px 24px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; border-radius: 2px; transition: background 0.2s; }
+    .cookie-accept:hover { background: var(--gold-light); }
+
+    .reveal { opacity: 0; transform: translateY(24px); }
+    .reveal-left { opacity: 0; transform: translateX(-36px); }
+    .reveal-right { opacity: 0; transform: translateX(36px); }
+
+    @media (max-width: 900px) {
+      .intro-inner { grid-template-columns: 1fr; gap: 50px; }
+      .werte-grid { grid-template-columns: 1fr; }
+      .cta-personal-inner { grid-template-columns: 1fr; gap: 50px; }
+      .intro-badge { left: -10px; }
+      .nav-links li:not(:last-child) { display: none; }
+    }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 110;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--navy);
+      transition: transform 0.3s, opacity 0.3s;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--white);
+      z-index: 105;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--navy);
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      width: 80%;
+      text-align: center;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:first-child { border-top: 1px solid var(--border); }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu a.mobile-cta {
+      margin-top: 32px;
+      background: var(--gold);
+      color: var(--white);
+      padding: 16px 40px;
+      border: none;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+    .mobile-menu a.mobile-cta:hover { background: var(--gold-light); color: var(--navy); }
+    .mobile-menu-contact {
+      margin-top: 28px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+    .mobile-menu-contact a { font-size: 1.1rem; color: var(--navy); font-weight: 600; border: none; padding: 0; width: auto; display: inline; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-main">Versicherungsmakler Richter</span>
+        <span class="nav-logo-sub">GmbH · Zwickau · seit 1998</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="leistungen.html">Leistungen</a></li>
+        <li><a href="ueber-mich.html" class="active">Über mich</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="kontakt.html" class="nav-cta">Termin vereinbaren</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="leistungen.html">Leistungen</a>
+  <a href="ueber-mich.html">Über mich</a>
+  <a href="kontakt.html">Kontakt</a>
+  <a href="kontakt.html" class="mobile-cta">Termin vereinbaren</a>
+  <div class="mobile-menu-contact"><a href="tel:0376042424">037604 / 2424</a></div>
+</div>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-eyebrow">Ihr Ansprechpartner</div>
+    <h1>Silvio Richter</h1>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="container">
+    <div class="intro-inner">
+      <div class="intro-img-wrap reveal-left">
+        <img
+          src="https://images.pexels.com/photos/8441864/pexels-photo-8441864.jpeg?auto=compress&cs=tinysrgb&w=800"
+          alt="Silvio Richter — Versicherungsmakler in Zwickau"
+          class="intro-img"
+        >
+        <div class="intro-img-frame"></div>
+        <div class="intro-badge">
+          <div class="intro-badge-num">28</div>
+          <div class="intro-badge-text">Jahre<br>Erfahrung</div>
+        </div>
+      </div>
+      <div class="intro-content reveal-right">
+        <span class="section-label">Über mich</span>
+        <h2>Ich berate — ich verkaufe nicht.</h2>
+        <p>Seit 1998 bin ich als unabhängiger Versicherungsmakler in Zwickau tätig. In dieser Zeit habe ich viele Menschen durch Schadensfälle, Vertragswechsel und veränderte Lebenssituationen begleitet — und dabei immer erlebt, wie wichtig es ist, <strong>jemanden an der Seite zu haben, dem man vertrauen kann.</strong></p>
+        <p>Als unabhängiger Makler bin ich keiner Versicherungsgesellschaft verpflichtet. Das heißt: Ich bekomme keine Vorgaben, welche Produkte ich empfehlen soll. Ich schaue mir den Markt an und empfehle, was für Sie konkret am besten passt.</p>
+        <p>Was mich von einem Vertreter oder einem Online-Portal unterscheidet: Ich lerne Sie kennen. Ich verstehe Ihre Situation. Und ich bin auch nach dem Vertragsabschluss für Sie da — wenn der Schaden eintritt, wenn sich Ihre Lebenssituation ändert oder wenn einfach Fragen auftauchen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WERTE -->
+<section class="werte">
+  <div class="container">
+    <span class="section-label reveal">Meine Arbeitsweise</span>
+    <h2 class="reveal" style="font-size:clamp(1.85rem,3vw,2.6rem);color:var(--navy);max-width:480px">Was meine Beratung ausmacht</h2>
+    <div class="werte-grid">
+      <div class="wert-card reveal">
+        <div class="wert-num">01</div>
+        <h3>Unabhängigkeit</h3>
+        <p>Kein Versicherer zahlt mir eine Prämie für bestimmte Produkte. Ich vergleiche offen und empfehle nur, was ich selbst für sinnvoll halte.</p>
+      </div>
+      <div class="wert-card reveal">
+        <div class="wert-num">02</div>
+        <h3>Klarheit</h3>
+        <p>Versicherungsverträge sind oft kompliziert. Ich erkläre Ihnen in klarer Sprache, was drin steht — was abgedeckt ist und was nicht.</p>
+      </div>
+      <div class="wert-card reveal">
+        <div class="wert-num">03</div>
+        <h3>Langfristigkeit</h3>
+        <p>Meine Kunden kommen nicht nur einmal. Viele begleite ich seit vielen Jahren — durch Familiengründung, Immobilienkauf und Ruhestand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <div class="container">
+    <span class="section-label reveal">Mein Weg</span>
+    <h2 class="reveal" style="font-size:clamp(1.85rem,3vw,2.6rem);color:var(--navy);max-width:480px;margin-bottom:0">28 Jahre im Dienst meiner Kunden</h2>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">1998</div>
+        <h3>Gründung der Versicherungsmakler Richter GmbH</h3>
+        <p>Start der Selbstständigkeit als unabhängiger Makler in Zwickau. Seitdem persönliche Beratung ohne Konzernbindung.</p>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2000er</div>
+        <h3>Aufbau einer treuen Stammkundschaft</h3>
+        <p>Viele Kunden der ersten Stunde sind bis heute dabei — manche begleite ich mittlerweile in der zweiten Generation.</p>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2010er</div>
+        <h3>WerKenntDenBESTEN Qualitätssiegel</h3>
+        <p>Auszeichnung durch das unabhängige Bewertungsportal — auf Basis echter Kundenstimmen. Bewertung: 5,0 Sterne.</p>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">Heute</div>
+        <h3>Persönliche Beratung in Zwickau und Umgebung</h3>
+        <p>Sprechzeiten dienstags und freitags — sowie nach Vereinbarung. Immer erreichbar für bestehende Kunden.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-personal">
+  <div class="container">
+    <div class="cta-personal-inner">
+      <div class="reveal">
+        <span class="section-label" style="color:var(--gold-light)">Kostenloses Erstgespräch</span>
+        <h2>Lernen wir uns kennen.</h2>
+        <p>In einem ersten Gespräch — ganz unverbindlich — schaue ich mir Ihre aktuelle Versicherungssituation an und sage Ihnen ehrlich, ob und wo Handlungsbedarf besteht.</p>
+        <a href="kontakt.html" class="btn-primary">Termin vereinbaren</a>
+      </div>
+      <div class="cta-contact-info reveal">
+        <div class="cta-contact-row">
+          <div class="cta-contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 4.18 2 2 0 015.07 2h3a2 2 0 012 1.72 12.8 12.8 0 00.7 2.81 2 2 0 01-.45 2.11L9.21 9.84a16 16 0 006.95 6.95l1.1-1.11a2 2 0 012.11-.45c.93.31 1.9.58 2.9.71A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cta-contact-label">Telefon</div>
+            <div class="cta-contact-value"><a href="tel:0376042424">037604 / 2424</a></div>
+          </div>
+        </div>
+        <div class="cta-contact-row">
+          <div class="cta-contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cta-contact-label">E-Mail</div>
+            <div class="cta-contact-value"><a href="mailto:ga-richter@freenet.de">ga-richter@freenet.de</a></div>
+          </div>
+        </div>
+        <div class="cta-contact-row">
+          <div class="cta-contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cta-contact-label">Sprechzeiten</div>
+            <div class="cta-contact-value">Di &amp; Fr 14:00–18:00 Uhr</div>
+          </div>
+        </div>
+        <div class="cta-contact-row">
+          <div class="cta-contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cta-contact-label">Adresse</div>
+            <div class="cta-contact-value">Sportplatzweg 2, 08058 Zwickau</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Versicherungsmakler Richter GmbH</div>
+        <div class="footer-brand-sub">Sportplatzweg 2 &middot; 08058 Zwickau &middot; Gegründet 1998</div>
+      </div>
+      <div class="footer-links">
+        <button onclick="openDrawer('impressum')">Impressum</button>
+        <button onclick="openDrawer('datenschutz')">Datenschutz</button>
+      </div>
+    </div>
+    <div class="footer-copy">&copy; 2025 Versicherungsmakler Richter GmbH &middot; Alle Rechte vorbehalten</div>
+  </div>
+</footer>
+
+<a href="https://wa.me/491725674494" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+  <div id="drawer-impressum" style="display:none">
+    <h2>Impressum</h2>
+    <h3>Angaben gemäß § 5 TMG</h3>
+    <address>Versicherungsmakler Richter GmbH<br>Sportplatzweg 2<br>08058 Zwickau<br><br>Telefon: 037604 / 2424<br>E-Mail: ga-richter@freenet.de</address>
+    <h3>Handelsregister</h3>
+    <p>Amtsgericht Chemnitz &middot; HRB 16266 &middot; Geschäftsführer: Silvio Richter</p>
+  </div>
+  <div id="drawer-datenschutz" style="display:none">
+    <h2>Datenschutzerklärung</h2>
+    <h3>1. Verantwortlicher</h3>
+    <p>Versicherungsmakler Richter GmbH, Sportplatzweg 2, 08058 Zwickau</p>
+    <h3>2. Ihre Rechte</h3>
+    <p>Auskunft, Berichtigung, Löschung: ga-richter@freenet.de</p>
+  </div>
+</div>
+
+<div class="cookie-banner" id="cookieBanner">
+  <p>Diese Website verwendet technisch notwendige Cookies. <button class="cookie-datenschutz" onclick="openDrawer('datenschutz')">Mehr erfahren</button></p>
+  <button class="cookie-accept" onclick="acceptCookie()">Verstanden</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (!localStorage.getItem('cookie_v1')) setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 900);
+  window.acceptCookie = function () { localStorage.setItem('cookie_v1','1'); document.getElementById('cookieBanner').classList.remove('show'); };
+  window.openDrawer = function (type) {
+    ['impressum','datenschutz'].forEach(id => document.getElementById('drawer-'+id).style.display='none');
+    document.getElementById('drawer-'+type).style.display='block';
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
+  };
+  window.closeDrawer = function () {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  };
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeDrawer(); });
+  window.addEventListener('load', () => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      const anim = (els, from, to) => gsap.utils.toArray(els).forEach((el,i) =>
+        gsap.fromTo(el, from, {...to, delay:(i%3)*0.08, scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}}));
+      anim('.reveal',     {opacity:0,y:22},  {opacity:1,y:0,duration:0.9,ease:'power2.out'});
+      anim('.reveal-left',{opacity:0,x:-36}, {opacity:1,x:0,duration:1.05,ease:'power2.out'});
+      anim('.reveal-right',{opacity:0,x:36}, {opacity:1,x:0,duration:1.05,ease:'power2.out'});
+    } else {
+      document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
+    }
+  });
+});
+
+  // HAMBURGER
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+</script>
+</body>
+</html>
