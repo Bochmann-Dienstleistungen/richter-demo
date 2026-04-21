@@ -381,7 +381,7 @@
 
       <div class="reveal-right">
         <div class="form-title">Anfrage senden</div>
-        <form class="kontakt-form" id="kontaktForm" action="https://formspree.io/f/mlgpooqw" method="POST">
+        <form class="kontakt-form" id="kontaktForm" action="https://richter-automation.richter-makler.workers.dev" method="POST">
           <div class="form-row">
             <div class="form-group">
               <label for="name">Ihr Name *</label>
@@ -507,19 +507,41 @@ document.addEventListener('DOMContentLoaded', function () {
   };
   document.addEventListener('keydown', e => { if(e.key==='Escape') closeDrawer(); });
 
-  // Form success (Formspree redirect alternative)
   const form = document.getElementById('kontaktForm');
   if (form) {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const data = new FormData(form);
+      const btn = form.querySelector('.btn-form');
+      btn.disabled = true;
+      btn.textContent = 'Wird gesendet …';
+      const fd = new FormData(form);
+      const payload = {};
+      fd.forEach((v, k) => { payload[k] = v; });
+      // field name mapping: wunschtermin → rueckruf
+      if (payload.wunschtermin && !payload.rueckruf) {
+        payload.rueckruf = payload.wunschtermin;
+        delete payload.wunschtermin;
+      }
       try {
-        const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
-        if (res.ok) {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (res.ok && data.ok) {
           form.style.display = 'none';
           document.getElementById('formSuccess').style.display = 'block';
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Anfrage absenden';
+          alert('Fehler beim Senden. Bitte rufen Sie uns direkt an: 037604 / 2424');
         }
-      } catch(err) { form.submit(); }
+      } catch(err) {
+        btn.disabled = false;
+        btn.textContent = 'Anfrage absenden';
+        alert('Verbindungsfehler. Bitte rufen Sie uns direkt an: 037604 / 2424');
+      }
     });
   }
 
