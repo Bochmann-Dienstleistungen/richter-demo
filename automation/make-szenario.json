@@ -1,0 +1,43 @@
+{
+  "name": "Richter Automation — Block A: Lead-Maschine",
+  "description": "Formspree Webhook → Auto-Reply → Google Sheets → Follow-up Sequenz",
+  "modules": [
+    {
+      "id": 1,
+      "type": "webhook:CustomWebHook",
+      "name": "Formspree Webhook empfangen",
+      "note": "In Formspree: Settings → Integrations → Make Webhook → diese URL eintragen"
+    },
+    {
+      "id": 2,
+      "type": "google-sheets:addRow",
+      "name": "Lead in Google Sheets speichern",
+      "note": "Tabelle: Richter_Leads | Spalten: Datum, Name, Email, Telefon, Thema, Rueckruf, Status, Quelle",
+      "fields": {
+        "Datum": "{{now}}",
+        "Name": "{{1.name}}",
+        "Email": "{{1.email}}",
+        "Telefon": "{{1.phone}}",
+        "Thema": "{{1.thema}}",
+        "Rueckruf": "{{1.rueckruf}}",
+        "Status": "Neu",
+        "Quelle": "Website"
+      }
+    },
+    {
+      "id": 3,
+      "type": "email:sendEmail",
+      "name": "Sofort-Antwort an Kunden",
+      "note": "Template: emails/01-sofortantwort.html — Variablen: {{1.name}}, {{1.thema}}, {{1.rueckruf}}",
+      "delay": "0 Minuten"
+    },
+    {
+      "id": 4,
+      "type": "email:sendEmail",
+      "name": "Benachrichtigung an Silvio",
+      "to": "ga-richter@freenet.de",
+      "note": "Template: worker.js buildNotificationHtml — sofort",
+      "delay": "0 Minuten"
+    }
+  ]
+}

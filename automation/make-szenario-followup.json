@@ -1,0 +1,34 @@
+{
+  "name": "Richter Automation — Follow-up Sequenz (48h / 7d / 14d)",
+  "description": "Google Sheets Watch → prüft Status 'Neu' → sendet Follow-up E-Mails zeitversetzt",
+  "trigger": "Google Sheets: Watch Rows — alle 24h",
+  "filter": "Status == 'Neu' UND Erstellt_vor >= 2 Tagen",
+  "modules": [
+    {
+      "id": 1,
+      "type": "google-sheets:watchRows",
+      "name": "Neue Leads aus Tabelle lesen",
+      "sheet": "Richter_Leads",
+      "filter": "Status = Neu"
+    },
+    {
+      "id": 2,
+      "type": "router",
+      "name": "Alter des Leads prüfen",
+      "routes": [
+        {
+          "condition": "Tage_seit_Eintrag == 2",
+          "action": "emails/02-followup-48h.html senden"
+        },
+        {
+          "condition": "Tage_seit_Eintrag == 7",
+          "action": "emails/03-mehrwert-7d.html senden"
+        },
+        {
+          "condition": "Tage_seit_Eintrag == 14",
+          "action": "emails/04-abschluss-14d.html senden + Status → Archiv"
+        }
+      ]
+    }
+  ]
+}

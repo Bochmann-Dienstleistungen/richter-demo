@@ -1,0 +1,43 @@
+{
+  "name": "Richter Automation — Block B+C+E: Retention, Reviews, Empfehlungen",
+  "description": "Bestandskunden-Pflege via Google Sheets Kundentabelle",
+  "sheets_required": [
+    {
+      "name": "Richter_Kunden",
+      "columns": [
+        "Name", "Email", "Telefon", "Geburtsdatum",
+        "Kunden_seit", "Letzter_Kontakt", "Status",
+        "Bewertung_angefragt", "Empfehlung_angefragt"
+      ]
+    }
+  ],
+  "szenarien": [
+    {
+      "name": "B1 — Jährliche Vertragsprüfung",
+      "trigger": "Täglich 09:00 Uhr",
+      "filter": "Letzter_Kontakt vor >= 365 Tagen UND Status = Aktiv",
+      "action": "emails/05-jahrespruefung.html senden",
+      "then": "Letzter_Kontakt aktualisieren"
+    },
+    {
+      "name": "B2 — Geburtstagsnachricht",
+      "trigger": "Täglich 08:00 Uhr",
+      "filter": "Geburtsdatum Monat+Tag == Heute",
+      "action": "emails/08-geburtstag.html senden"
+    },
+    {
+      "name": "C — Bewertungsanfrage",
+      "trigger": "Nach Abschluss / manuell auslösen in Sheets (Status → Bewertung_anfragen)",
+      "filter": "Bewertung_angefragt == NEIN",
+      "action": "emails/06-bewertungsanfrage.html senden",
+      "then": "Bewertung_angefragt = JA + Datum"
+    },
+    {
+      "name": "E — Empfehlungsanfrage",
+      "trigger": "3 Monate nach erstem Abschluss",
+      "filter": "Kunden_seit vor >= 90 Tagen UND Empfehlung_angefragt == NEIN",
+      "action": "emails/07-empfehlung.html senden",
+      "then": "Empfehlung_angefragt = JA + Datum"
+    }
+  ]
+}
